@@ -29,7 +29,7 @@ class RheometerState:
             self.__density_calculation = False
             self.initial_state.set_variable("P", p_in)
 
-    def get_output_state(self, t_out, input_point=None):
+    def get_output_state(self, t_out, state_var="P", input_point=None):
 
         if input_point is None:
 
@@ -39,7 +39,7 @@ class RheometerState:
         new_state.set_variable("rho", input_point.get_variable("rho"))
         new_state.set_variable("T", t_out)
 
-        return new_state
+        return new_state.get_variable(state_var)
 
     def get_uncertainties(self, t_out, state_var="P", calculate_with_drivatives=False):
 
