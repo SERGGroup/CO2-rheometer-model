@@ -1,4 +1,5 @@
 from REFPROPConnector import ThermodynamicPoint
+from collections.abc import Iterable
 
 
 DEFAULT_UNC = {
@@ -55,9 +56,19 @@ class Rheometer:
         self.initial_state.set_variable("rho", self.__tmp_state.get_variable("rho"))
         self.initial_state.set_variable("P", p_input / 10)
 
-    def calculate_current_pressure(self, t_new):
+    def calculate_current_pressure(self, t_new_value):
 
-        return self.__get_output_state(t_new=t_new).get_variable("P") * 10
+        if issubclass(type(t_new_value), Iterable):
+
+            result_list = list()
+
+            for t_new in t_new_value:
+
+                result_list.append(self.__get_output_state(t_new=t_new).get_variable("P") * 10)
+
+            return result_list
+
+        return self.__get_output_state(t_new=t_new_value).get_variable("P") * 10
 
     def calculate_pressure_uncertainties(self, t_new, calculate_with_derivatives=False):
 
